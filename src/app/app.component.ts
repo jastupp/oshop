@@ -28,9 +28,11 @@ export class AppComponent implements OnInit {
         this.auth.user$.subscribe(user => {
             if(user) {
                 this.userService.save(user);
-                let return_url = localStorage.getItem('returnUrl');
-                return_url = return_url !== 'null' ? return_url : '';
-                this.router.navigateByUrl(return_url);
+                const return_url = localStorage.getItem('returnUrl');
+                if(return_url) {
+                    localStorage.removeItem('returnUrl');
+                    this.router.navigateByUrl(return_url);
+                }
             }
         });
     }

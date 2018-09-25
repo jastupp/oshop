@@ -17,11 +17,11 @@ export class CategoryService {
     //**********
     private get database() { return this.m_database; }
 
-    getCategories() {
+    getAll() {
         // return this.database.list('/category/',
         //     ref => ref.orderByKey())
         //     .valueChanges();
-        return this.database.list('/category/', ref => ref.orderByChild('name'))
+        return this.database.list('/categories/', ref => ref.orderByChild('name'))
             .snapshotChanges().pipe(
                 map(changes => {
                     return changes.map(c => ({ key: c.payload.key, data: c.payload.val()}));

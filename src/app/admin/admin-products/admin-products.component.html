@@ -24,7 +24,7 @@
     <tbody>
     <tr *ngFor="let next of mf.data">
         <td>{{ next.data.title }}</td>
-        <td>{{ next.data.price }}</td>
+        <td>{{ next.data.price | currency:"AUD":'symbol' }}</td>
         <td><a [routerLink]="['/admin/products', next.key]">Edit</a></td>
     </tr>
     </tbody>
