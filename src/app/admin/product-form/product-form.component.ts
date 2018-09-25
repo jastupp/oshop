@@ -3,6 +3,7 @@ import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, take } from 'rxjs/operators';
+import { Product } from '../../models/product';
 
 @Component({
     selector: 'app-product-form',
@@ -15,7 +16,7 @@ export class ProductFormComponent implements OnInit {
     // Class Members *
     //****************
     private m_categories$;
-    private m_product = {};
+    private m_product: Product = { key: '', data: { title: '', price: 0, category: '', imageUrl: '' }};
     private m_product_id;
 
     //**************
@@ -53,7 +54,7 @@ export class ProductFormComponent implements OnInit {
 
             this.productService.get(this.productId).pipe(
                 take(1),
-                map(p => { console.log('In here with ', p); return this.m_product = p; })
+                map(p => this.m_product = p )
             ).subscribe();
         }
     }

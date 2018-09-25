@@ -20,8 +20,8 @@ export class ProductService {
     private get database() { return this.m_database; }
 
 
-    create(product) {
-        return this.database.list('/products').push(product);
+    create(product: Product) {
+        return this.database.list('/products').push(product.data);
     }
 
     getAll(): Observable<Product[]> {
@@ -34,13 +34,19 @@ export class ProductService {
     }
 
 
-    get(product_id) {
-        return this.database.object('/products/' + product_id).valueChanges();
+    get(product_id): Observable<Product> {
+        return this.database.object('/products/' + product_id)
+            .valueChanges()
+            .pipe(
+                map(p => {
+                    return ({ key: product_id, data: p }) as Product;
+                })
+            );
     }
 
 
-    update(product_id, product) {
-        return this.database.object('/products/' + product_id).update(product);
+    update(product_id, product: Product) {
+        return this.database.object('/products/' + product_id).update(product.data);
     }
 
     delete(productId) {
