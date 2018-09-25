@@ -20,12 +20,10 @@ export class UserService {
     private get database() { return this.m_database; }
 
     save(user: User) {
-        console.log('start save ...');
         this.database.object('/users/' + user.uid).update({
             name: user.displayName,
             email: user.email
         });
-        console.log('Finished save ...');
     }
 
     get(uid: string): AngularFireObject<AppUser> {
