@@ -16,7 +16,7 @@ export class ProductFormComponent implements OnInit {
     // Class Members *
     //****************
     private m_categories$;
-    private m_product: Product = { key: '', data: { title: '', price: 0, category: '', imageUrl: '' }};
+    private m_product: Product = { key: '', title: '', price: 0, category: '', imageUrl: '' };
     private m_product_id;
 
     //**************

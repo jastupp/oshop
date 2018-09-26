@@ -44,10 +44,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
     //**********
     // Setters *
     //**********
+    private set subscription(value) { this.m_subscription = value; }
     set filtered(value) { this.m_filtered = value; }
     set products(value) { this.m_products = value; }
     set category(value) { this.m_category = value; }
-    set cart(value) { this.m_cart = value; }
+    set cart(value) { console.log('Cart = ', value); this.m_cart = value; }
 
 
     async ngOnInit() {
@@ -60,16 +61,19 @@ export class ProductsComponent implements OnInit, OnDestroy {
         ).subscribe(params => {
             this.category = params.get('category');
             this.filtered = (this.category) ?
-                this.products.filter(product => product.data.category === this.category) :
+                this.products.filter(product => product.category === this.category) :
                 this.products;
         });
 
-        this.m_subscription = (await this.shoppingCartService.getCart())
-            .subscribe(cart => this.cart = cart);
+        this.subscription = (await this.shoppingCartService.getCart())
+            .subscribe(cart => {
+                console.log('ProductsComponent::ngOnInit Cart = ', cart);
+                this.cart = cart;
+            });
     }
 
     ngOnDestroy(): void {
-
+        this.subscription.unsubscribe();
     }
 
 }

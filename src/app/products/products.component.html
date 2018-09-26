@@ -7,7 +7,7 @@
             <ng-container *ngFor="let next of filtered; let i = index">
 
                 <div class="col">
-                    <app-product-card [product]="next"></app-product-card>
+                    <app-product-card [shopping-cart]="cart" [product]="next"></app-product-card>
                 </div>
                 <div *ngIf="i % 2 !== 0" class="w-100"></div>
 

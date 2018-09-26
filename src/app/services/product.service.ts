@@ -21,14 +21,20 @@ export class ProductService {
 
 
     create(product: Product) {
-        return this.database.list('/products').push(product.data);
+        return this.database.list('/products').push(product);
     }
 
     getAll(): Observable<Product[]> {
         return this.database.list('/products')
             .snapshotChanges().pipe(
                 map(products => {
-                    return products.map(p => ({ key: p.payload.key, data: p.payload.val()}) as Product );
+                    return products.map(p => ({
+                        key: p.payload.key,
+                        title: p.payload.val()['title'],
+                        price: p.payload.val()['price'],
+                        category: p.payload.val()['category'],
+                        imageUrl: p.payload.val()['imageUrl']
+                    }) as Product );
                 })
         );
     }
@@ -39,14 +45,20 @@ export class ProductService {
             .valueChanges()
             .pipe(
                 map(p => {
-                    return ({ key: product_id, data: p }) as Product;
+                    return ({
+                        key: product_id,
+                        title: p['title'],
+                        price: p['price'],
+                        category: p['category'],
+                        imageUrl: p['imageUrl']
+                    }) as Product;
                 })
             );
     }
 
 
     update(product_id, product: Product) {
-        return this.database.object('/products/' + product_id).update(product.data);
+        return this.database.object('/products/' + product_id).update(product);
     }
 
     delete(productId) {

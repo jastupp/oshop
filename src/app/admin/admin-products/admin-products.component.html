@@ -13,18 +13,18 @@
     <thead>
     <tr>
         <th style="width: 20%">
-            <mfDefaultSorter by="data.title">Title</mfDefaultSorter>
+            <mfDefaultSorter by="title">Title</mfDefaultSorter>
         </th>
         <th style="width: 50%">
-            <mfDefaultSorter by="data.price">Price</mfDefaultSorter>
+            <mfDefaultSorter by="price">Price</mfDefaultSorter>
         </th>
         <th style="width: 10%"></th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let next of mf.data">
-        <td>{{ next.data.title }}</td>
-        <td>{{ next.data.price | currency:"AUD":'symbol' }}</td>
+        <td>{{ next.title }}</td>
+        <td>{{ next.price | currency:"AUD":'symbol' }}</td>
         <td><a [routerLink]="['/admin/products', next.key]">Edit</a></td>
     </tr>
     </tbody>

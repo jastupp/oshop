@@ -9,7 +9,13 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" routerLink="/shopping-cart">Shopping Cart</a>
+                <a class="nav-link" routerLink="/shopping-cart">
+                    Shopping Cart
+                    <span *ngIf="cart$ | async as cart"
+                          class="badge badge-warning badge-pill">
+                        {{ cart.totalItems }}
+                    </span>
+                </a>
             </li>
             <li *ngIf="appUser; else anonymous" ngbDropdown class="nav-item dropdown">
                 <a ngbDropdownToggle class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown"

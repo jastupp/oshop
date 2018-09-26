@@ -25,15 +25,16 @@ export class ProductCardComponent implements OnInit {
     // Getters *
     //**********
     private get shoppingCartService() { return this.m_shopping_cart_service; }
+    get shoppingCart() { return this.m_shopping_cart; }
     get product() { return this.m_product; }
     get showActions() { return this.m_show_actions; }
 
     //**********
     // Setters *
     //**********
-    @Input() set product(value) { this.m_product = value; }
-    @Input() set showActions(value) { this.m_show_actions = value; }
-    @Input() set shoppingCart(value) { this.m_shopping_cart = value; }
+    @Input('product') set product(value) { this.m_product = value; }
+    @Input('show-actions') set showActions(value) { this.m_show_actions = value; }
+    @Input('shopping-cart') set shoppingCart(value) { this.m_shopping_cart = value; }
 
     ngOnInit() { }
 
@@ -42,14 +43,18 @@ export class ProductCardComponent implements OnInit {
         let result  = 0;
 
         if(this.shoppingCart) {
-            const item = this.shoppingCart.items[this.product.key];
+            const item = this.shoppingCart.itemMap[this.product.key];
             result = item ? item.quantity : result;
         }
 
         return result;
     }
 
-    addToCart(product: Product) {
-        this.shoppingCartService.addToCart(product);
+    addToCart() {
+        this.shoppingCartService.addToCart(this.product);
+    }
+
+    removeFromCart() {
+        this.shoppingCartService.removeFromCart(this.product);
     }
 }

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import {Product} from '../models/product';
 import {map, take} from 'rxjs/operators';
+import {ShoppingCart} from '../models/shopping-cart';
+import {Observable} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -18,29 +20,39 @@ export class ShoppingCartService {
     //**********
     private get database() { return this.m_database; }
 
-    async addToCart(product: Product) {
-        const cart_id = await this.cartId();
-        console.log('Cart ID = ' + cart_id);
-        const item$ = this.getItem(cart_id, product.key);
 
-        console.log('item$ = ', item$);
+    addToCart(product: Product) {
+        this.updateCart(product, 1);
+    }
+
+    removeFromCart(product: Product) {
+        this.updateCart(product, -1);
+    }
+
+    async getCart(): Promise<Observable<ShoppingCart>> {
+        const cart_id = await this.cartId();
+        //console.log('ShoppingCartService::getCart CartID = ', cart_id);
+        return this.database.object<ShoppingCart>('/shopping-carts/' + cart_id)
+            .valueChanges()
+            .pipe(
+                map(cart => new ShoppingCart(cart.items))
+            );
+    }
+
+    private async updateCart(product: Product, change: number) {
+        const cart_id = await this.cartId();
+        const item$ = this.getItem(cart_id, product.key);
 
         item$.valueChanges()
             .pipe( take(1) )
             .subscribe(item => {
-                console.log('In here ... ', item);
-                item$.update({ product: product.data, quantity: ((item && item['quantity']) || 0) + 1 });
-            }
-        );
+                    console.log('In here ... ', item);
+                    item$.update({ product: product, quantity: ((item && item['quantity']) || 0) + change });
+                }
+            );
     }
 
-    async getCart() {
-        const cart_id = await this.cartId();
-        return this.database.object('/shopping-cart/' + cart_id).valueChanges();
-    }
-
-    private getItem(cart_id: string, product_id: string)
-    {
+    private getItem(cart_id: string, product_id: string) {
         return this.database.object('/shopping-carts/' + cart_id + '/items/' + product_id);
     }
 
