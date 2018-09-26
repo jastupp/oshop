@@ -1,11 +1,12 @@
 import {ShoppingCartItem} from './shopping-cart-items';
+import {Product} from './product';
 
 export class ShoppingCart {
 
     //****************
     // Class Members *
     //****************
-    private m_item_map: ShoppingCartItem[];
+    private m_item_map: ShoppingCartItem[] = [];
     private m_items: ShoppingCartItem[] = [];
 
     //**************
@@ -15,7 +16,10 @@ export class ShoppingCart {
         this.m_item_map = items_map;
         for(const id of Object.keys(this.itemMap)) {
             const item = this.itemMap[id];
-            this.items.push(new ShoppingCartItem(item.product, item.quantity));
+            const x = new ShoppingCartItem(id);
+            Object.assign(x, item);
+            console.log('Constructor :', x, item);
+            this.items.push(x);
         }
     }
 
@@ -23,7 +27,7 @@ export class ShoppingCart {
     // Getters *
     //**********
     get itemMap() { return this.m_item_map; }
-    get items() { console.log('Items: ', this.m_items); return this.m_items; }
+    get items() { return this.m_items; }
 
     get totalItems() {
         return this.total('quantity');
@@ -31,6 +35,11 @@ export class ShoppingCart {
 
     get totalPrice() {
         return this.total('totalPrice');
+    }
+
+    getQuantity(product: Product) {
+        const item = this.itemMap[product.key];
+        return item ? item.quantity : 0;
     }
 
     private total(property: string) {

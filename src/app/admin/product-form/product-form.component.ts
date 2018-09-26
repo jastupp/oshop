@@ -49,9 +49,6 @@ export class ProductFormComponent implements OnInit {
         this.categories$ = this.categoryService.getAll();
         this.productId = this.route.snapshot.paramMap.get('id');
         if(this.productId) {
-            console.log('Got id', this.productId);
-            //this.productService.get(id).subscribe(p => { console.log('In here with', p); this.m_product = p; });
-
             this.productService.get(this.productId).pipe(
                 take(1),
                 map(p => this.m_product = p )
@@ -66,13 +63,11 @@ export class ProductFormComponent implements OnInit {
             this.productService.create(product).then();
         }
 
-        console.log('Save Form = ', product);
         this.router.navigate(['/admin/products']).then();
     }
 
     delete() {
         if(confirm('Are you sure you want to delete this product')) {
-            console.log('In the delete method');
             this.productService.delete(this.productId);
             this.router.navigate(['/admin/products']).then();
         }

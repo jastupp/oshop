@@ -51,10 +51,4 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
             this.products.filter(p => p.title.toLowerCase().includes(query.toLowerCase())) :
             this.products;
     }
-
-    sortByChange(table) {
-        console.log(table);
-    }
-
-
 }

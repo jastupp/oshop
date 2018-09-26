@@ -15,8 +15,13 @@
         </thead>
         <tbody>
         <tr *ngFor="let next of cart.items">
-            <td>{{ next.product.title }}</td>
-            <td>{{ next.quantity }}</td>
+            <td>{{ next.title }}</td>
+            <td>
+                <app-product-quantity [product]="next"
+                                      [shopping-cart]="cart">
+                    {{ next.quantity }}
+                </app-product-quantity>
+            </td>
             <td>{{ next.totalPrice | currency:'AUD':'symbol' }}</td>
         </tr>
         </tbody>

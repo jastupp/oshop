@@ -48,7 +48,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     set filtered(value) { this.m_filtered = value; }
     set products(value) { this.m_products = value; }
     set category(value) { this.m_category = value; }
-    set cart(value) { console.log('Cart = ', value); this.m_cart = value; }
+    set cart(value) { this.m_cart = value; }
 
 
     async ngOnInit() {
@@ -67,7 +67,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
         this.subscription = (await this.shoppingCartService.getCart())
             .subscribe(cart => {
-                console.log('ProductsComponent::ngOnInit Cart = ', cart);
                 this.cart = cart;
             });
     }
