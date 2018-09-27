@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import {Product} from '../models/product';
-import {map, take} from 'rxjs/operators';
-import {ShoppingCart} from '../models/shopping-cart';
-import {Observable} from 'rxjs';
+import { Product } from '../models/product';
+import { map, take } from 'rxjs/operators';
+import { ShoppingCart } from '../models/shopping-cart';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -44,15 +44,15 @@ export class ShoppingCartService {
         const item$ = this.getItem(cart_id, product.key);
 
         item$.valueChanges()
-            .pipe( take(1) )
+            .pipe(take(1))
             .subscribe(item => {
-                console.log('Item = ', item);
-                console.log('Product.title = ', product.title);
-                console.log('Product.imageUrl = ', product.imageUrl);
-                console.log('Product.price = ', product.price);
+                    console.log('Item = ', item);
+                    console.log('Product.title = ', product.title);
+                    console.log('Product.imageUrl = ', product.imageUrl);
+                    console.log('Product.price = ', product.price);
                     item$.update({
                         title: product.title,
-                        imageURL: product.imageUrl,
+                        imageUrl: product.imageUrl,
                         price: product.price,
                         quantity: ((item && item['quantity']) || 0) + change
                     });
@@ -67,20 +67,29 @@ export class ShoppingCartService {
     // get a promise to the cart id
     private async cartId(): Promise<string> {
         // get the cart id
-        const cart_id = localStorage.getItem('cartId');
-
+        let cart_id;
+        while((cart_id = localStorage.getItem('cartId')) === 'WAIT...') {
+            await this.delay(200);
+        }
         // if there isnt a cart create one
         return cart_id ? cart_id : await this.createCart();
     }
 
     // Create a cart in the database
     private createCart() {
+        localStorage.setItem('cartId', 'WAIT...');
+
         // create a new cart and return the promise
         return this.database.list('/shopping-carts/').push({
             dateCreated: new Date().getTime()
         }).then(cart => {
             localStorage.setItem('cartId', cart.key);
+
             return cart.key;
         });
+    }
+
+    private async delay(ms: number) {
+        return new Promise( resolve => setTimeout(resolve, ms) );
     }
 }

@@ -30,6 +30,7 @@ export class ShoppingCartComponent implements OnInit {
     set cart$(value) { this.m_cart$ = value; }
 
     async ngOnInit() {
+        console.log('Shopping Cart Component... ');
         this.cart$ = await this.m_shopping_cart_service.getCart();
     }
 

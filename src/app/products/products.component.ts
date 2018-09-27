@@ -52,6 +52,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
 
     async ngOnInit() {
+        console.log('Products Component ...');
+        this.subscription = (await this.shoppingCartService.getCart())
+            .subscribe(cart => {
+                this.cart = cart;
+            });
 
         this.productService.getAll().pipe(
             switchMap(products => {
@@ -64,11 +69,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
                 this.products.filter(product => product.category === this.category) :
                 this.products;
         });
-
-        this.subscription = (await this.shoppingCartService.getCart())
-            .subscribe(cart => {
-                this.cart = cart;
-            });
     }
 
     ngOnDestroy(): void {

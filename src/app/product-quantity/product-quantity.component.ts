@@ -19,37 +19,22 @@ export class ProductQuantityComponent implements OnInit {
     //**************
     // Constructor *
     //**************
-    constructor(private m_shopping_cart_service: ShoppingCartService) {
-    }
+    constructor(private m_shopping_cart_service: ShoppingCartService) { }
 
     //**********
     // Getters *
     //**********
-    private get shoppingCartService() {
-        return this.m_shopping_cart_service;
-    }
-
-    get shoppingCart() {
-        return this.m_shopping_cart;
-    }
-
-    get product() {
-        return this.m_product;
-    }
+    private get shoppingCartService() {  return this.m_shopping_cart_service; }
+    get shoppingCart() { return this.m_shopping_cart; }
+    get product() { return this.m_product;}
 
     //**********
     // Setters *
     //**********
-    @Input('product') set product(value) {
-        this.m_product = value;
-    }
+    @Input('product') set product(value) { this.m_product = value; }
+    @Input('shopping-cart') set shoppingCart(value) { this.m_shopping_cart = value; }
 
-    @Input('shopping-cart') set shoppingCart(value) {
-        this.m_shopping_cart = value;
-    }
-
-    ngOnInit() {
-    }
+    ngOnInit() { }
 
     addToCart() {
         this.shoppingCartService.addToCart(this.product);

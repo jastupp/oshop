@@ -23,7 +23,7 @@ export class ShoppingCartItem {
     //***********
     get key() { return this.m_key; }
     get title() { return this.m_title; }
-    get imageURL() { return this.m_image_url; }
+    get imageUrl() { return this.m_image_url; }
     get price() { return this.m_price; }
     get quantity() { return this.m_quantity; }
 
@@ -32,7 +32,7 @@ export class ShoppingCartItem {
     //***********
     set key(value) { this.m_key = value; }
     set title(value) { this.m_title = value; }
-    set imageURL(value) { this.m_image_url = value; }
+    set imageUrl(value) { this.m_image_url = value; }
     set price(value) { this.m_price = value; }
     set quantity(value) { this.m_quantity = value; }
 
