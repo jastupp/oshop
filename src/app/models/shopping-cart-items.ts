@@ -14,8 +14,8 @@ export class ShoppingCartItem {
     //***************
     // Constructor **
     //***************
-    constructor(key: string) {
-        this.m_key = key;
+    constructor(init?: Partial<ShoppingCartItem>) {
+        Object.assign(this, init);
     }
 
     //***********

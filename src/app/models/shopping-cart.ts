@@ -16,26 +16,18 @@ export class ShoppingCart {
         this.m_item_map = items_map;
         for(const id of Object.keys(this.itemMap)) {
             const item = this.itemMap[id];
-            const x = new ShoppingCartItem(id);
-            Object.assign(x, item);
-            console.log('Constructor :', x, item);
-            this.items.push(x);
+            this.items.push(new ShoppingCartItem({ ...item, key: id }));
         }
     }
 
     //**********
     // Getters *
     //**********
-    get itemMap() { return this.m_item_map; }
+    private get itemMap() { return this.m_item_map; }
     get items() { return this.m_items; }
+    get totalItems() { return this.total('quantity'); }
+    get totalPrice() { return this.total('totalPrice'); }
 
-    get totalItems() {
-        return this.total('quantity');
-    }
-
-    get totalPrice() {
-        return this.total('totalPrice');
-    }
 
     getQuantity(product: Product) {
         const item = this.itemMap[product.key];

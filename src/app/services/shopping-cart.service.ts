@@ -29,35 +29,39 @@ export class ShoppingCartService {
         this.updateItem(product, -1);
     }
 
+    async clearCart() {
+        const cart_id = await this.cartId();
+        this.database.object('/shopping-carts/' + cart_id + '/items').remove();
+    }
+
     async getCart(): Promise<Observable<ShoppingCart>> {
         const cart_id = await this.cartId();
         return this.database.object<ShoppingCart>('/shopping-carts/' + cart_id)
             .valueChanges()
             .pipe(
-                map(cart => new ShoppingCart(cart.items ? cart.items : []))
+                map(cart => new ShoppingCart((cart && cart.items) ? cart.items : []))
             );
     }
 
     private async updateItem(product: Product, change: number) {
         const cart_id = await this.cartId();
-        console.log('Update Item', product, change);
         const item$ = this.getItem(cart_id, product.key);
 
         item$.valueChanges()
             .pipe(take(1))
             .subscribe(item => {
-                    console.log('Item = ', item);
-                    console.log('Product.title = ', product.title);
-                    console.log('Product.imageUrl = ', product.imageUrl);
-                    console.log('Product.price = ', product.price);
+                const quantity = ((item && item['quantity']) || 0) + change;
+                if(quantity === 0) {
+                    item$.remove();
+                } else {
                     item$.update({
                         title: product.title,
                         imageUrl: product.imageUrl,
                         price: product.price,
-                        quantity: ((item && item['quantity']) || 0) + change
+                        quantity: quantity
                     });
                 }
-            );
+            });
     }
 
     private getItem(cart_id: string, product_id: string) {
