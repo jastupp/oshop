@@ -5,51 +5,31 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
-import { HomeComponent } from './home/home.component';
-import { ProductsComponent } from './products/products.component';
-import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
-import { CheckOutComponent } from './check-out/check-out.component';
-import { OrderSuccessComponent } from './order-success/order-success.component';
-import { MyOrdersComponent } from './my-orders/my-orders.component';
-import { AdminProductsComponent } from './admin/components/admin-products/admin-products.component';
-import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orders.component';
+import { BsNavbarComponent } from './core/components/bs-navbar/bs-navbar.component';
+import { HomeComponent } from './core/components/home/home.component';
+import { ProductsComponent } from './shopping/components/products/products.component';
 import { RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './core/components/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AuthGuardService } from './shared/services/auth-guard.service';
-import { AdminAuthGuardService } from './admin/services/admin-auth-guard.service';
-import { ProductFormComponent } from './admin/components/product-form/product-form.component';
 import { FormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ng2-validation';
 import { DataTableModule } from 'angular-6-datatable';
-import { ProductFilterComponent } from './products/product-filter/product-filter.component';
-import { ShoppingCartSummaryComponent } from './shopping-cart-summary/shopping-cart-summary.component';
-import { ShippingFormComponent } from './shipping-form/shipping-form.component';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from 'shared/shared.module';
 import { AdminModule } from './admin/admin.module';
+import { ShoppingModule } from './shopping/shopping.module';
 
 @NgModule({
     declarations: [
         AppComponent,
         BsNavbarComponent,
         HomeComponent,
-        ProductsComponent,
-        ShoppingCartComponent,
-        CheckOutComponent,
-        OrderSuccessComponent,
-        MyOrdersComponent,
-
-        LoginComponent,
-        ProductFilterComponent,
-
-        ShoppingCartSummaryComponent,
-        ShippingFormComponent
+        LoginComponent
     ],
     imports: [
         BrowserModule,
         SharedModule,
         AdminModule,
+        ShoppingModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
@@ -59,22 +39,10 @@ import { AdminModule } from './admin/admin.module';
         NgbModule,
         RouterModule.forRoot([
             {path: '', component: ProductsComponent},
-            {path: 'products', component: ProductsComponent},
-            {path: 'shopping-cart', component: ShoppingCartComponent},
-            {path: 'login', component: LoginComponent},
-
-            {path: 'check-out', component: CheckOutComponent, canActivate: [AuthGuardService]},
-            {path: 'order-success/:id', component: OrderSuccessComponent, canActivate: [AuthGuardService]},
-            {path: 'my/orders', component: MyOrdersComponent, canActivate: [AuthGuardService]},
-
-            {path: 'admin/products/new', component: ProductFormComponent, canActivate: [AuthGuardService, AdminAuthGuardService]},
-            {path: 'admin/products/:id', component: ProductFormComponent, canActivate: [AuthGuardService, AdminAuthGuardService]},
-            {path: 'admin/products', component: AdminProductsComponent, canActivate: [AuthGuardService, AdminAuthGuardService]},
-            {path: 'admin/orders', component: AdminOrdersComponent, canActivate: [AuthGuardService, AdminAuthGuardService]}
+            {path: 'login', component: LoginComponent}
         ])
     ],
-    providers: [
-    ],
+    providers: [],
     bootstrap: [AppComponent]
 })
 export class AppModule {
